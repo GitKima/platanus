@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>プラタナス | アカペラグループ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest:    #3D5A3E;
+      --bark:      #8B6F47;
+      --sage:      #A8C5A0;
+      --cream:     #F5F0E8;
+      --parchment: #EDE6D6;
+      --dark:      #2A2A2A;
+      --muted:     #7A7A6A;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(245,240,232,0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(61,90,62,0.13);
+      padding: 1rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.2rem;
+      color: var(--forest);
+      letter-spacing: 0.22em;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--forest); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(175deg, #c8dcc8 0%, #dceadc 30%, #eaf2ea 60%, var(--cream) 100%);
+      padding-top: 70px;
+    }
+    .tree-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      flex: 1;
+    }
+    .tree-svg {
+      width: min(760px, 96vw);
+      display: block;
+    }
+
+    /* leaf sway */
+    @keyframes sw1 { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(1.5deg)} }
+    @keyframes sw2 { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-2deg)} }
+    @keyframes sw3 { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(1.2deg)} }
+    @keyframes sw4 { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-1.5deg)} }
+    @media (prefers-reduced-motion: no-preference) {
+      .lg1 { transform-origin: 50% 100%; animation: sw1 6s ease-in-out infinite; }
+      .lg2 { transform-origin: 50% 100%; animation: sw2 7.5s ease-in-out infinite; }
+      .lg3 { transform-origin: 50% 100%; animation: sw3 5.5s ease-in-out infinite; }
+      .lg4 { transform-origin: 50% 100%; animation: sw4 8s ease-in-out infinite; }
+    }
+
+    .hero-text {
+      text-align: center;
+      padding: 2rem 1.5rem 3.5rem;
+      position: relative; z-index: 2;
+    }
+    .hero-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(3rem, 9vw, 6rem);
+      font-weight: 300;
+      color: var(--forest);
+      letter-spacing: 0.38em;
+      line-height: 1;
+    }
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--bark);
+      letter-spacing: 0.16em;
+      margin-top: 0.9rem;
+    }
+    .hero-tagline {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      margin-top: 1rem;
+    }
+    .scroll-cue {
+      position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: var(--muted); font-size: 0.6rem; letter-spacing: 0.22em;
+    }
+    .scroll-cue span { display: block; width: 1px; height: 38px; background: var(--sage); animation: grow 2s ease-in-out infinite; }
+    @keyframes grow { 0%{opacity:0;transform:scaleY(0)} 55%{opacity:1;transform:scaleY(1)} 100%{opacity:0;transform:scaleY(1)} }
+
+    /* SECTIONS */
+    section { max-width: 860px; margin: 0 auto; padding: 6rem 2rem; }
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.72rem; letter-spacing: 0.32em;
+      color: var(--bark); text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      font-weight: 400; color: var(--forest);
+      letter-spacing: 0.1em; margin-bottom: 2rem;
+    }
+    .divider { width: 44px; height: 2px; background: var(--sage); margin-bottom: 2.5rem; }
+
+    /* ABOUT */
+    #about { border-top: 1px solid rgba(61,90,62,0.12); }
+    .about-text { font-size: 1rem; line-height: 2.1; color: #4a4a3a; }
+    .about-text p + p { margin-top: 1.2rem; }
+
+    /* MUSIC */
+    #music { border-top: 1px solid rgba(61,90,62,0.12); }
+    .music-placeholder {
+      border: 2px dashed var(--sage); border-radius: 4px;
+      padding: 4rem 2rem; text-align: center; color: var(--muted); margin-top: 2rem;
+    }
+    .music-placeholder .music-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .music-placeholder p { font-size: 0.9rem; line-height: 1.9; }
+    .coming-soon {
+      display: inline-block; margin-top: 1.2rem;
+      font-size: 0.68rem; letter-spacing: 0.28em; color: var(--bark);
+      border: 1px solid var(--bark); padding: 0.3rem 1rem; border-radius: 2px;
+    }
+
+    /* RECRUIT */
+    #recruit { background: var(--forest); max-width: 100%; padding: 6rem 0; color: var(--cream); }
+    #recruit .inner { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+    #recruit .section-label { color: var(--sage); }
+    #recruit .section-title { color: var(--cream); }
+    #recruit .divider { background: var(--sage); }
+    .recruit-intro { color: rgba(245,240,232,0.85); font-size: 0.95rem; line-height: 2; margin-bottom: 0.5rem; }
+    .recruit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .recruit-card {
+      border: 1px solid rgba(168,197,160,0.3); border-radius: 4px;
+      padding: 2rem; transition: background 0.3s;
+    }
+    .recruit-card:hover { background: rgba(255,255,255,0.06); }
+    .recruit-card h3 { font-family: 'Noto Serif JP', serif; font-size: 1.1rem; color: var(--sage); margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .recruit-card p { font-size: 0.87rem; line-height: 1.9; color: rgba(245,240,232,0.8); }
+    .recruit-note { margin-top: 2.5rem; font-size: 0.84rem; color: rgba(245,240,232,0.6); line-height: 2.1; }
+
+    /* CONTACT */
+    #contact { border-top: 1px solid rgba(61,90,62,0.12); }
+    .contact-intro { font-size: 0.95rem; color: #4a4a3a; line-height: 2; margin-bottom: 2.5rem; }
+    .contact-box { background: var(--parchment); border-radius: 4px; padding: 2.5rem; border-left: 3px solid var(--bark); }
+    .contact-box p { font-size: 0.87rem; color: var(--muted); line-height: 2; margin-bottom: 1rem; }
+    .contact-email { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--forest); }
+    .contact-email a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--sage); }
+    .contact-email a:hover { color: var(--bark); }
+    .contact-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+    .contact-tag { font-size: 0.7rem; letter-spacing: 0.14em; padding: 0.3rem 0.9rem; border: 1px solid var(--sage); border-radius: 2px; color: var(--forest); }
+
+    /* FOOTER */
+    footer {
+      text-align: center; padding: 3rem 2rem;
+      border-top: 1px solid rgba(61,90,62,0.12);
+      font-size: 0.73rem; color: var(--muted); letter-spacing: 0.15em;
+    }
+    footer .footer-logo { font-family: 'Noto Serif JP', serif; font-size: 1rem; color: var(--forest); letter-spacing: 0.3em; margin-bottom: 0.5rem; }
+
+    @media (max-width: 600px) { .nav-links { display: none; } nav { padding: 1rem 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">プラタナス</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#recruit">募集</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="tree-wrap">
+  <svg class="tree-svg" viewBox="0 0 760 580" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <!-- プラタナス葉：5裂の大きな切れ込みのある葉 -->
+      <path id="L" d="
+        M0,-44
+        C2,-38 9,-35 7,-26
+        C13,-30 19,-26 16,-18
+        C22,-18 24,-10 18,-6
+        C24,-2 22,6 15,9
+        C18,15 14,24 6,24
+        C8,30 3,38 0,36
+        C-3,38 -8,30 -6,24
+        C-14,24 -18,15 -15,9
+        C-22,6 -24,-2 -18,-6
+        C-24,-10 -22,-18 -16,-18
+        C-19,-26 -13,-30 -7,-26
+        C-9,-35 -2,-38 0,-44Z
+      "/>
+      <path id="M" d="
+        M0,-32
+        C2,-27 7,-25 5,-18
+        C10,-21 14,-18 12,-12
+        C16,-12 18,-6 13,-3
+        C17,-0 15,6 10,8
+        C13,13 10,19 4,19
+        C6,23 2,29 0,28
+        C-2,29 -6,23 -4,19
+        C-10,19 -13,13 -10,8
+        C-15,6 -17,-0 -13,-3
+        C-18,-6 -16,-12 -12,-12
+        C-14,-18 -10,-21 -5,-18
+        C-7,-25 -2,-27 0,-32Z
+      "/>
+      <path id="S" d="
+        M0,-22
+        C1,-18 5,-17 3,-12
+        C7,-14 9,-11 7,-7
+        C11,-7 12,-3 8,-1
+        C11,1 10,6 6,8
+        C8,11 6,15 2,15
+        C4,18 1,21 0,20
+        C-1,21 -4,18 -2,15
+        C-6,15 -8,11 -6,8
+        C-10,6 -11,1 -8,-1
+        C-12,-3 -11,-7 -7,-7
+        C-9,-11 -7,-14 -3,-12
+        C-5,-17 -1,-18 0,-22Z
+      "/>
+
+      <!-- 樹皮グラデーション -->
+      <linearGradient id="trunkGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#6B4F2E"/>
+        <stop offset="18%" stop-color="#C8A878"/>
+        <stop offset="38%" stop-color="#E8D4B0"/>
+        <stop offset="55%" stop-color="#D0B080"/>
+        <stop offset="72%" stop-color="#B89060"/>
+        <stop offset="85%" stop-color="#8B6840"/>
+        <stop offset="100%" stop-color="#5A3E20"/>
+      </linearGradient>
+      <linearGradient id="branch1Grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#7A5530"/>
+        <stop offset="40%" stop-color="#C0966A"/>
+        <stop offset="100%" stop-color="#6A4828"/>
+      </linearGradient>
+      <linearGradient id="rootGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8B6840"/>
+        <stop offset="100%" stop-color="#5A3E20"/>
+      </linearGradient>
+
+      <!-- 影フィルタ -->
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="4" stdDeviation="4" flood-color="#2A1A08" flood-opacity="0.25"/>
+      </filter>
+    </defs>
+
+    <!-- ── 地面の影 ── -->
+    <ellipse cx="380" cy="568" rx="190" ry="12" fill="#2A3A2A" opacity="0.18"/>
+
+    <!-- ── 根 ── -->
+    <path d="M330 555 Q295 558 260 570" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.7"/>
+    <path d="M340 558 Q320 568 300 578" stroke="url(#rootGrad)" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.55"/>
+    <path d="M430 555 Q462 558 495 570" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.7"/>
+    <path d="M418 558 Q438 568 458 578" stroke="url(#rootGrad)" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.55"/>
+    <path d="M375 558 Q372 572 368 582" stroke="url(#rootGrad)" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.5"/>
+
+    <!-- ── 幹（すずかけ特有の2股） ── -->
+    <!-- 幹の影 -->
+    <path d="M372 558 Q368 480 360 420 Q352 360 346 310 Q342 270 345 240 Q348 215 355 195" stroke="#3A2808" stroke-width="52" stroke-linecap="round" fill="none" opacity="0.22"/>
+
+    <!-- 幹本体 左側エッジ（暗） -->
+    <path d="M348 558 Q344 480 338 420 Q332 360 326 310 Q322 270 323 240 Q324 215 330 195" stroke="#6B4F2E" stroke-width="52" stroke-linecap="round" fill="none"/>
+    <!-- 幹本体 右側エッジ（暗） -->
+    <path d="M400 558 Q404 480 410 420 Q416 360 420 310 Q424 270 423 240 Q422 215 416 195" stroke="#6B4F2E" stroke-width="46" stroke-linecap="round" fill="none"/>
+    <!-- 幹本体 中央（明・すずかけのまだら樹皮） -->
+    <path d="M374 558 Q370 480 365 420 Q360 360 356 310 Q353 270 355 240 Q357 215 362 195" stroke="url(#trunkGrad)" stroke-width="56" stroke-linecap="round" fill="none" filter="url(#shadow)"/>
+
+    <!-- まだら樹皮パターン（プラタナスの特徴：白・緑・茶のまだら） -->
+    <path d="M346 420 Q368 408 380 428 Q362 438 346 420Z" fill="#D4C0A0" opacity="0.55"/>
+    <path d="M358 460 Q382 448 392 466 Q374 476 358 460Z" fill="#E8D8B8" opacity="0.5"/>
+    <path d="M350 380 Q372 370 378 388 Q360 396 350 380Z" fill="#C8B890" opacity="0.48"/>
+    <path d="M365 500 Q385 492 390 508 Q374 514 365 500Z" fill="#D8C8A8" opacity="0.45"/>
+    <path d="M355 340 Q375 332 380 348 Q364 354 355 340Z" fill="#BCAC80" opacity="0.5"/>
+    <path d="M368 300 Q386 294 388 308 Q374 312 368 300Z" fill="#D0BE96" opacity="0.45"/>
+    <path d="M352 260 Q372 254 374 268 Q358 272 352 260Z" fill="#C4B48A" opacity="0.42"/>
+    <!-- 幹の合流部を強調 -->
+    <ellipse cx="376" cy="200" rx="36" ry="18" fill="#7A5830" opacity="0.5"/>
+    <ellipse cx="376" cy="200" rx="26" ry="12" fill="#A07848" opacity="0.4"/>
+
+    <!-- ── 主要な枝（太い） ── -->
+    <!-- 左主幹 -->
+    <path d="M345 198 Q305 170 268 145" stroke="#7A5530" stroke-width="30" stroke-linecap="round" fill="none"/>
+    <path d="M345 198 Q305 170 268 145" stroke="#B08858" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- 右主幹 -->
+    <path d="M405 200 Q445 172 482 148" stroke="#7A5530" stroke-width="28" stroke-linecap="round" fill="none"/>
+    <path d="M405 200 Q445 172 482 148" stroke="#B08858" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- 中央上 -->
+    <path d="M375 192 Q374 158 376 125" stroke="#7A5530" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M375 192 Q374 158 376 125" stroke="#B08858" stroke-width="17" stroke-linecap="round" fill="none" opacity="0.55"/>
+
+    <!-- 左側の副枝 -->
+    <path d="M358 230 Q310 215 270 200" stroke="#7A5530" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M358 230 Q310 215 270 200" stroke="#A07848" stroke-width="11" stroke-linecap="round" fill="none" opacity="0.55"/>
+    <!-- 右側の副枝 -->
+    <path d="M394 232 Q442 218 482 204" stroke="#7A5530" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M394 232 Q442 218 482 204" stroke="#A07848" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.55"/>
+
+    <!-- ── 細枝 ── -->
+    <!-- 左上の枝展開 -->
+    <path d="M268 145 Q228 120 188 98" stroke="#7A5530" stroke-width="13" stroke-linecap="round" fill="none"/>
+    <path d="M268 145 Q248 110 238 78" stroke="#6A4828" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M268 145 Q250 148 228 140" stroke="#6A4828" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <!-- 右上の枝展開 -->
+    <path d="M482 148 Q522 122 562 100" stroke="#7A5530" stroke-width="13" stroke-linecap="round" fill="none"/>
+    <path d="M482 148 Q502 112 512 80" stroke="#6A4828" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M482 148 Q500 150 522 144" stroke="#6A4828" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <!-- 中央上の枝展開 -->
+    <path d="M376 125 Q355 95 340 65" stroke="#6A4828" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <path d="M376 125 Q397 95 412 67" stroke="#6A4828" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <path d="M376 125 Q376 95 378 68" stroke="#6A4828" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <!-- 左副枝の展開 -->
+    <path d="M270 200 Q235 182 200 162" stroke="#6A4828" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M270 200 Q252 176 238 152" stroke="#604020" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <!-- 右副枝の展開 -->
+    <path d="M482 204 Q518 186 552 168" stroke="#6A4828" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M482 204 Q500 178 514 155" stroke="#604020" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+    <!-- さらに細い末端の枝 -->
+    <path d="M188 98 Q162 80 138 62" stroke="#5A3818" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M188 98 Q175 70 168 44" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M188 98 Q205 76 208 54" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M562 100 Q588 82 612 64" stroke="#5A3818" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M562 100 Q578 72 582 46" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M562 100 Q545 78 542 54" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M238 78 Q222 54 212 32" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M238 78 Q248 52 252 30" stroke="#5A3818" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M512 80 Q498 55 492 32" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M512 80 Q524 54 528 32" stroke="#5A3818" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M200 162 Q172 148 148 132" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M552 168 Q580 152 604 138" stroke="#5A3818" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+    <!-- ── 葉のグループ 1（左上） ── -->
+    <g class="lg1">
+      <use href="#L" transform="translate(138,56) rotate(-18)" fill="#3E7A40" opacity="0.9"/>
+      <use href="#L" transform="translate(155,40) rotate(28)" fill="#2E6830" opacity="0.85"/>
+      <use href="#M" transform="translate(172,52) rotate(-48)" fill="#50925A" opacity="0.82"/>
+      <use href="#L" transform="translate(120,72) rotate(12)" fill="#3A6E3C" opacity="0.88"/>
+      <use href="#M" transform="translate(112,52) rotate(-32)" fill="#60A865" opacity="0.78"/>
+      <use href="#S" transform="translate(142,34) rotate(55)" fill="#48884C" opacity="0.8"/>
+      <use href="#L" transform="translate(165,68) rotate(-62)" fill="#2E6030" opacity="0.9"/>
+      <use href="#M" transform="translate(100,80) rotate(22)" fill="#4A8050" opacity="0.84"/>
+      <use href="#L" transform="translate(178,38) rotate(40)" fill="#38723C" opacity="0.86"/>
+      <use href="#S" transform="translate(125,42) rotate(-55)" fill="#58985E" opacity="0.76"/>
+      <use href="#L" transform="translate(145,82) rotate(18)" fill="#3A6E3E" opacity="0.88"/>
+      <use href="#M" transform="translate(192,62) rotate(-35)" fill="#4C8A52" opacity="0.8"/>
+      <use href="#L" transform="translate(108,62) rotate(45)" fill="#306832" opacity="0.87"/>
+      <!-- 左副枝付近 -->
+      <use href="#L" transform="translate(148,130) rotate(-22)" fill="#3E7A40" opacity="0.86"/>
+      <use href="#M" transform="translate(132,145) rotate(38)" fill="#2E6830" opacity="0.82"/>
+      <use href="#L" transform="translate(165,122) rotate(-50)" fill="#50925A" opacity="0.8"/>
+      <use href="#S" transform="translate(122,128) rotate(15)" fill="#4A8050" opacity="0.78"/>
+      <use href="#M" transform="translate(168,142) rotate(-38)" fill="#3A6E3E" opacity="0.84"/>
+      <use href="#L" transform="translate(212,48) rotate(25)" fill="#306832" opacity="0.85"/>
+      <use href="#M" transform="translate(222,32) rotate(-42)" fill="#48884C" opacity="0.78"/>
+      <!-- 左上枝先 -->
+      <use href="#L" transform="translate(210,165) rotate(30)" fill="#3A6E3E" opacity="0.83"/>
+      <use href="#M" transform="translate(195,175) rotate(-45)" fill="#4C8A52" opacity="0.78"/>
+      <use href="#L" transform="translate(225,155) rotate(-20)" fill="#2E6830" opacity="0.85"/>
+    </g>
+
+    <!-- ── 葉のグループ 2（中央上） ── -->
+    <g class="lg2">
+      <use href="#L" transform="translate(340,58) rotate(-22)" fill="#3E7A40" opacity="0.9"/>
+      <use href="#L" transform="translate(358,42) rotate(32)" fill="#2E6830" opacity="0.86"/>
+      <use href="#M" transform="translate(376,52) rotate(-50)" fill="#50925A" opacity="0.83"/>
+      <use href="#L" transform="translate(395,46) rotate(15)" fill="#3A6E3E" opacity="0.88"/>
+      <use href="#L" transform="translate(412,60) rotate(-35)" fill="#48884C" opacity="0.85"/>
+      <use href="#M" transform="translate(325,70) rotate(42)" fill="#60A865" opacity="0.78"/>
+      <use href="#L" transform="translate(342,80) rotate(-58)" fill="#2E6030" opacity="0.88"/>
+      <use href="#M" transform="translate(380,72) rotate(25)" fill="#4A8050" opacity="0.82"/>
+      <use href="#L" transform="translate(398,82) rotate(-42)" fill="#38723C" opacity="0.86"/>
+      <use href="#S" transform="translate(360,34) rotate(60)" fill="#58985E" opacity="0.75"/>
+      <use href="#L" transform="translate(320,55) rotate(-15)" fill="#3A6E3E" opacity="0.87"/>
+      <use href="#L" transform="translate(418,42) rotate(50)" fill="#306832" opacity="0.84"/>
+      <use href="#M" transform="translate(362,90) rotate(-28)" fill="#4C8A52" opacity="0.8"/>
+      <use href="#S" transform="translate(340,40) rotate(35)" fill="#48884C" opacity="0.78"/>
+      <use href="#L" transform="translate(430,70) rotate(-22)" fill="#2E6830" opacity="0.82"/>
+    </g>
+
+    <!-- ── 葉のグループ 3（右上） ── -->
+    <g class="lg3">
+      <use href="#L" transform="translate(562,94) rotate(20)" fill="#3E7A40" opacity="0.88"/>
+      <use href="#L" transform="translate(578,78) rotate(-28)" fill="#2E6830" opacity="0.84"/>
+      <use href="#M" transform="translate(548,82) rotate(52)" fill="#50925A" opacity="0.81"/>
+      <use href="#L" transform="translate(598,86) rotate(-15)" fill="#3A6E3E" opacity="0.87"/>
+      <use href="#M" transform="translate(614,72) rotate(38)" fill="#60A865" opacity="0.77"/>
+      <use href="#S" transform="translate(580,60) rotate(-55)" fill="#4A8050" opacity="0.79"/>
+      <use href="#L" transform="translate(535,95) rotate(25)" fill="#2E6030" opacity="0.89"/>
+      <use href="#M" transform="translate(602,100) rotate(-42)" fill="#48884C" opacity="0.83"/>
+      <use href="#L" transform="translate(575,108) rotate(55)" fill="#38723C" opacity="0.85"/>
+      <use href="#S" transform="translate(548,68) rotate(-20)" fill="#58985E" opacity="0.74"/>
+      <use href="#L" transform="translate(528,78) rotate(42)" fill="#3A6E3E" opacity="0.86"/>
+      <use href="#M" transform="translate(620,55) rotate(-35)" fill="#306832" opacity="0.8"/>
+      <use href="#L" transform="translate(545,48) rotate(18)" fill="#4C8A52" opacity="0.83"/>
+      <use href="#S" transform="translate(596,62) rotate(48)" fill="#48884C" opacity="0.77"/>
+      <!-- 右副枝付近 -->
+      <use href="#L" transform="translate(552,162) rotate(-25)" fill="#3E7A40" opacity="0.85"/>
+      <use href="#M" transform="translate(568,175) rotate(40)" fill="#2E6830" opacity="0.8"/>
+      <use href="#L" transform="translate(535,155) rotate(-52)" fill="#50925A" opacity="0.78"/>
+      <use href="#M" transform="translate(578,158) rotate(18)" fill="#4A8050" opacity="0.82"/>
+      <use href="#L" transform="translate(605,142) rotate(-35)" fill="#3A6E3E" opacity="0.83"/>
+    </g>
+
+    <!-- ── 葉のグループ 4（中間・下層の枝） ── -->
+    <g class="lg4">
+      <!-- 左中 -->
+      <use href="#L" transform="translate(240,155) rotate(28)" fill="#3E7A40" opacity="0.84"/>
+      <use href="#M" transform="translate(225,168) rotate(-42)" fill="#2E6830" opacity="0.79"/>
+      <use href="#L" transform="translate(255,142) rotate(-20)" fill="#50925A" opacity="0.77"/>
+      <use href="#S" transform="translate(215,145) rotate(55)" fill="#4A8050" opacity="0.75"/>
+      <use href="#L" transform="translate(272,162) rotate(45)" fill="#3A6E3E" opacity="0.82"/>
+      <!-- 右中 -->
+      <use href="#L" transform="translate(514,158) rotate(-28)" fill="#3E7A40" opacity="0.84"/>
+      <use href="#M" transform="translate(528,170) rotate(42)" fill="#2E6830" opacity="0.79"/>
+      <use href="#L" transform="translate(500,145) rotate(20)" fill="#50925A" opacity="0.77"/>
+      <use href="#S" transform="translate(540,148) rotate(-55)" fill="#4A8050" opacity="0.75"/>
+      <use href="#L" transform="translate(482,162) rotate(-45)" fill="#3A6E3E" opacity="0.82"/>
+    </g>
+
+    <!-- ── プラタナスの実（丸い毬） ── -->
+    <g filter="url(#shadow)">
+      <!-- 実1 -->
+      <circle cx="218" cy="122" r="11" fill="#B89040"/>
+      <circle cx="218" cy="122" r="11" fill="none" stroke="#906820" stroke-width="1.2"/>
+      <circle cx="214" cy="119" r="3" fill="#D0AA60" opacity="0.6"/>
+      <circle cx="222" cy="124" r="2.5" fill="#906820" opacity="0.5"/>
+      <circle cx="216" cy="127" r="2" fill="#C89840" opacity="0.55"/>
+      <path d="M215,111 Q218,107 221,111" stroke="#704E18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- 実2 -->
+      <circle cx="540" cy="126" r="10" fill="#B89040"/>
+      <circle cx="540" cy="126" r="10" fill="none" stroke="#906820" stroke-width="1.2"/>
+      <circle cx="536" cy="123" r="2.8" fill="#D0AA60" opacity="0.6"/>
+      <circle cx="544" cy="128" r="2.2" fill="#906820" opacity="0.5"/>
+      <path d="M537,116 Q540,112 543,116" stroke="#704E18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- 実3 -->
+      <circle cx="380" cy="108" r="9" fill="#B89040"/>
+      <circle cx="380" cy="108" r="9" fill="none" stroke="#906820" stroke-width="1"/>
+      <circle cx="377" cy="105" r="2.5" fill="#D0AA60" opacity="0.6"/>
+      <path d="M377,99 Q380,95 383,99" stroke="#704E18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- 落ち葉 -->
+    <use href="#S" transform="translate(310,565) rotate(40)" fill="#8B6A28" opacity="0.38"/>
+    <use href="#S" transform="translate(440,568) rotate(-55)" fill="#7A5E22" opacity="0.32"/>
+    <use href="#S" transform="translate(352,572) rotate(70)" fill="#9A7430" opacity="0.28"/>
+  </svg>
+  </div>
+
+  <div class="hero-text">
+    <h1 class="hero-title">プラタナス</h1>
+    <p class="hero-subtitle">Platanus — Women's A cappella Trio</p>
+    <p class="hero-tagline">声だけで紡ぐ、三つのハーモニー</p>
+  </div>
+
+  <div class="scroll-cue"><span></span>scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">About</p>
+  <h2 class="section-title">プラタナスについて</h2>
+  <div class="divider"></div>
+  <div class="about-text">
+    <p>プラタナスは、40代の女性3人によるアカペラグループです。楽器を持たず、声だけで音楽を奏でます。</p>
+    <p>グループ名の「プラタナス」は、すずかけの木の学名。大きく広がる枝葉のように、私たちの歌声が重なり合い、ひとつの大きなハーモニーを生み出すことへの想いを込めています。</p>
+    <p>年齢を重ねてきた女性たちの声が持つ深みと温かさを大切に、様々なジャンルの楽曲に挑戦しています。</p>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music">
+  <p class="section-label">Music</p>
+  <h2 class="section-title">音源・動画</h2>
+  <div class="divider"></div>
+  <div class="music-placeholder">
+    <div class="music-icon">🎵</div>
+    <p>現在、音源・動画を鋭意録音・制作中です。<br>完成次第、こちらで公開していきます。<br>どうぞお楽しみに。</p>
+    <span class="coming-soon">COMING SOON</span>
+  </div>
+</section>
+
+<!-- RECRUIT -->
+<section id="recruit">
+  <div class="inner">
+    <p class="section-label">Join Us</p>
+    <h2 class="section-title">メンバー募集</h2>
+    <div class="divider"></div>
+    <p class="recruit-intro">
+      プラタナスでは現在、一緒に音楽を楽しんでくれる仲間を募集しています。<br>
+      アカペラ・バンド・声楽・合唱の経験がある方、ぜひご連絡ください。
+    </p>
+    <div class="recruit-grid">
+      <div class="recruit-card">
+        <h3>🎵 ベース</h3>
+        <p>低音パートを担当してくださる方を募集中です。性別問わず、低音域が得意な方を歓迎します。アカペラでのベースラインは、グループのグルーヴを支える大切なポジションです。</p>
+      </div>
+      <div class="recruit-card">
+        <h3>🥁 ボイスパーカッション</h3>
+        <p>声でリズムを刻むボイパ担当を探しています。経験者の方のご応募をお待ちしています。</p>
+      </div>
+    </div>
+    <p class="recruit-note">
+      ※ 活動エリア：神奈川県東部<br>
+      ※ 活動頻度：土日を中心に月2回程度<br>
+      ※ 年齢・経歴よりも、一緒に音楽を楽しめる気持ちを大切にしています。
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2 class="section-title">お問い合わせ</h2>
+  <div class="divider"></div>
+  <p class="contact-intro">
+    出演依頼・メンバー募集へのご応募・その他お問い合わせは、以下のメールアドレスまでお気軽にご連絡ください。
+  </p>
+  <div class="contact-box">
+    <p>メールでのお問い合わせ</p>
+    <p class="contact-email">
+      <a href="mailto:platanus.voice@gmail.com">platanus.voice@gmail.com</a>
+    </p>
+    <div class="contact-tags">
+      <span class="contact-tag">出演依頼</span>
+      <span class="contact-tag">メンバー募集への応募</span>
+      <span class="contact-tag">取材・メディア</span>
+      <span class="contact-tag">その他</span>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.82rem;">
+      ※ お返事まで数日いただく場合がございます。ご了承ください。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">プラタナス</p>
+  <p>&copy; 2025 Platanus A cappella Trio. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
